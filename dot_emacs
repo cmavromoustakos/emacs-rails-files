@@ -1,0 +1,57 @@
+(server-start)
+(display-time)
+(setq load-path (cons "~/.emacs.d" (cons "~/.emacs.d/emacs-rails" (cons "~/.emacs.d/nxml-mode-20041004" load-path))))
+(setq load-path (cons "~/.emacs.d/color-theme-6.6.0" load-path))
+
+(require 'color-theme)
+(require 'rails)
+(load-file "~/.emacs.d/nxml-mode-20041004/rng-auto.el")
+(color-theme-initialize)
+(if (string= window-system nil)
+    (color-theme-arjen)
+)
+
+;;(if (= emacs-major-version 23)
+;;    (load-file "~/.emacs.d/site-lisp/cedet-1.0pre4/common/cedet.el"))
+
+
+(mouse-wheel-mode 1)
+(setq c-mode-hook
+    (function (lambda ()
+                (setq indent-tabs-mode nil)
+                (setq c-basic-offset 4))))
+(setq objc-mode-hook
+    (function (lambda ()
+                (setq indent-tabs-mode nil)
+                (setq c-basic-offset 4))))
+(setq c++-mode-hook
+    (function (lambda ()
+                (setq indent-tabs-mode nil)
+                (setq c-basic-offset 4))))
+
+(fset 'indent-buffer
+      ( lambda (&optional arg) "Indents Current Buffer" (interactive "p") 
+	(indent-region (point-min) (point-max) nil)))
+(if (string= window-system "ns")
+     (progn 
+       (modify-frame-parameters
+	(selected-frame)
+	'((font . "-*-Andale Mono-*-*-*-*-12-*-*-*-*-*-*")))
+;;       (menu-bar-showhide-fringe-menu-customize-disable)
+      (menu-bar-showhide-fringe-menu-customize-left)
+;;       (menu-bar-no-scroll-bar)
+       (server-start)
+       ;;(color-theme-arjen)
+       ;;(custom-set-faces
+       ;;'(flymake-errline ((((class color)) (:background "DarkRed")))))
+       ;;'(cursor ((t (:background "yellow" :foreground "black"))))
+       ;;(load-file "~/.emacs.d/color-theme-ns-dark-alpha.el")
+       ;;(ns-set-background-alpha .9)
+       (blink-cursor-mode)
+       )
+)
+
+(setq auto-mode-alist
+      (cons '("\\.\\(xml\\|xsl\\|rng\\|xhtml\\|rdf\\|xsd\\)\\'" . nxml-mode)
+            auto-mode-alist))
+(setq rng-schema-loader-alist '(("rnc" . rng-c-load-schema) ("rng" . rng-load-schema)))
